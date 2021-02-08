@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  web:
+    container_name: php
+    build: .
+    # no image:, volumes:, or command: override
+    ports:
+    - "80:80"
+    - "443:443"
+    volumes:
+    - ./src:/var/www/html
+  db:
+    image: mysql:5.7
+    container_name: bdMysql
+    volumes:
+      - ./data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=teste    
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - 88:80
+    links:
+      - db:db
+    depends_on:
+      - db
+  
